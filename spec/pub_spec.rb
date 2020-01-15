@@ -13,15 +13,16 @@ class TestPub < MiniTest::Test
     @drink1 = Drink.new("Beers are Us", 5, 2)
     @drink2 = Drink.new("Rainbow", 7, 13)
     @drink3 = Drink.new("Sunshine", 4, 45)
-    drinks = [@drink1, @drink2, @drink3]
     @drink_not_present = Drink.new("Hello World",20,99)
+    drinks = [@drink1, @drink2, @drink3]
     @pub = Pub.new("Something Arms", 3400)
-    @pub.add_drink(drinks)
+    @pub.add_drinks(drinks)
     @customer1 = Customer.new("Andrew", 45, 21)
-    @customer2 = Customer.new("Sheila", 15, 17)
+    @customer2 = Customer.new("Sheila", 25, 20)
+    @customer3 = Customer.new("Lorna", 12, 17)
   end
 
-  def test_pub_name()
+  def test_pub_name
     assert_equal("Something Arms", @pub.name)
   end
 
@@ -50,13 +51,13 @@ class TestPub < MiniTest::Test
 
   def test_check_drinking_age_customer()
     assert_equal(true, @pub.check_drinking_age_customer(@customer1))
-    assert_equal(false, @pub.check_drinking_age_customer(@customer2))
+    assert_equal(false, @pub.check_drinking_age_customer(@customer3))
   end
 
   def test_sell_a_drink()
     @pub.sell_a_drink(@customer2, @drink1)
     assert_equal(2, @pub.pub_drink_count())
-    assert_equal(10, @customer2.wallet_cash)
+    assert_equal(20, @customer2.wallet_cash)
     assert_equal(3405, @pub.till_cash)
   end
 

@@ -4,9 +4,9 @@ require('minitest/reporters')
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 require_relative("../customer.rb")
-require_relative("../drink.rb")
 require_relative("../pub.rb")
-
+require_relative("../drink.rb")
+require_relative("../food.rb")
 
 class TestCustomer < MiniTest::Test
 
@@ -19,7 +19,12 @@ class TestCustomer < MiniTest::Test
     @drink3 = Drink.new("Sunshine", 4, 45)
     drinks = [@drink, @drink1, @drink2, @drink3]
     @pub = Pub.new("Something Arms", 3400)
-    @pub.add_drink(drinks)
+    @pub.add_drinks(drinks)
+    @food1 = Food.new("Peanuts", 3, 3)
+    @food2 = Food.new("Burger", 11, 13)
+    @food3 = Food.new("Chips", 4, 8)
+    foods = [@food1, @food2, @food3]
+    @pub.add_foods(foods)
   end
 
   def test_customer_name()
@@ -51,4 +56,19 @@ class TestCustomer < MiniTest::Test
     @customer2.increase_drunkeness_level(@drink)
     assert_equal(@drink.alcohol_level, @customer2.drunkeness)
   end
+
+  def test_buy_a_drink()
+    @customer2.buy_a_drink(@pub, @drink1)
+    assert_equal(3, @pub.pub_drink_count())
+    assert_equal(2, @customer2.wallet_cash)
+    assert_equal(3405, @pub.till_cash)
+  end
+
+  def test_buy_food()
+    @customer2.buy_food(@pub, @food3)
+    assert_equal(2, @pub.pub_food_count())
+    assert_equal(3, @customer2.wallet_cash)
+    assert_equal(3404, @pub.till_cash)
+  end
+
 end
